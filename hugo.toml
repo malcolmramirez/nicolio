@@ -1,0 +1,26 @@
+baseURL = 'https://example.org/'
+languageCode = 'en-us'
+title = 'NICOLE WYDEVEN'
+theme = 'port'
+
+[taxonomies]
+    art = 'art'
+
+[menu]
+    [[menu.main]]
+        name = "about"
+        url = "/about/"
+        weight = 1
+    [[menu.main]]
+        name = "work"
+        url = "/art/"
+        weight = 2
+    [[menu.main]]
+        name = "contact"
+        url = "/contact/"
+        weight = 3
+
+[params.taxonomy_weights]
+    painting = 1
+    digital = 2
+

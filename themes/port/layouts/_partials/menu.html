@@ -1,0 +1,8 @@
+<nav class="main-nav">
+  {{ $currentURL := .RelPermalink }}
+  {{ range .Site.Menus.main }}
+    <a href="{{ .URL }}" class="{{ if eq $currentURL .URL }}active{{ end }}">
+      {{ .Name }}
+    </a>
+  {{ end }}
+</nav>

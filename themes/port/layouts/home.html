@@ -1,0 +1,17 @@
+{{ define "main" }}
+
+    <div class="image-grid">
+        {{ with .Site.GetPage "/art" }}
+          {{ range (sort .Pages "Date" "desc") }}
+            <a href="{{ .Permalink }}" title="{{ .Title }}">
+              {{ $thumb := .Page.Resources.GetMatch .Params.thumb }}
+              {{ with $thumb }}
+                <img src="{{ $thumb.RelPermalink }}" alt="{{ .Title }}" class="img-responsive">
+              {{ end }}
+            </a>
+          {{ end }}
+        {{ end }}
+    </div>
+
+
+{{ end }}
