@@ -1,0 +1,34 @@
+{{ define "main" }}
+
+<div class="artwork-back">
+    <a href="{{ "/art/" | relLangURL }}">&lt back</a>
+</div>
+
+<div class="artwork-container">
+    {{ if and (isset .Params "image") .Params.image }}
+        {{ $image := .Page.Resources.GetMatch .Params.image }}
+        {{ with $image }}
+            {{ $thumb := .Resize "600x" }}
+            <div class="artwork-image">
+                {{ printf `<img src="%s" alt="%s" class="img-responsive artwork-single">` $thumb.RelPermalink .Title | safeHTML }}
+            </div>
+        {{end}}
+    {{ end }}
+
+    <div class="artwork-details">
+        <div class="artwork-header">
+            <h2 class="artwork-single-title">{{ .Title }}</h2>
+            {{ if .Params.art }}
+                <div class="artwork-tags">
+                    {{- range .Params.art -}}
+                        <a href="{{ "/art/" | relLangURL }}{{ . | urlize }}/">[{{ . }}]</a>
+                    {{- end -}}
+                </div>
+            {{ end }}
+        </div>
+        <div class="artwork-single-info">{{ .Content }}</div>
+    </div>
+</div>
+
+{{ end }}
+

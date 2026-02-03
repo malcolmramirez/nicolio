@@ -6,4 +6,4 @@ art = ["painting"]
 weight = 1
 +++
 
-Hi there
+Oil on canvas, 20 x 20 

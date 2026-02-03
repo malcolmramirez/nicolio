@@ -1,22 +1,24 @@
 {{ define "main" }}
 
-    <div class="image-grid">
-      {{ range .Pages }}
-        <div class="artwork-card">
-          <a href="{{ .Permalink }}" title="{{ .Title }}">
-                {{ $thumb := .Resources.GetMatch .Params.thumb }}
-            {{ with $thumb }}
-              <img src="{{ $thumb.RelPermalink }}" alt="{{ .Title }}" class="img-responsive">
-            {{ end }}
-          </a>
-          <div class="artwork-info">
-            <span class="artwork-title">{{ .Title }}</span>
-            {{ with .Params.art }}
-              <span class="artwork-tags">[{{ delimit . ", " }}]</span>
-            {{ end }}
-          </div>
-        </div>
-      {{ end }}
+{{ partial "taxonomy-menu.html" . }}
+
+<div class="image-grid">
+  {{ range .Pages }}
+    <div class="artwork-card">
+      <a href="{{ .Permalink }}" title="{{ .Title }}">
+        {{ $thumb := .Resources.GetMatch .Params.thumb }}
+        {{ with $thumb }}
+          <img src="{{ $thumb.RelPermalink }}" alt="{{ .Title }}" class="img-responsive">
+        {{ end }}
+      </a>
+      <div class="artwork-info">
+          <span class="artwork-title">{{ .Title }}</span>
+        {{ with .Params.art }}
+          <span class="artwork-tags">[{{ delimit . " " }}]</span>
+        {{ end }}
+      </div>
     </div>
+  {{ end }}
+</div>
 
 {{ end }}

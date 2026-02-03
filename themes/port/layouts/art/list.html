@@ -1,5 +1,7 @@
 {{ define "main" }}
 
+{{ partial "taxonomy-menu.html" . }}
+
 <div class="image-grid">
     {{ $allPages := where .Site.RegularPages "Params.art" "!=" nil }}
     {{ range sort $allPages "Params.weight" }}

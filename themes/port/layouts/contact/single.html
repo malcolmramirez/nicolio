@@ -1,0 +1,31 @@
+{{ define "main" }}
+
+<div class="contact-container">
+    {{ if and (isset .Params "card") .Params.card }}
+        {{ $card := .Page.Resources.GetMatch .Params.card }}
+        {{ with $card }}
+            <div class="contact-card" style="background-image: url('{{ .RelPermalink }}');">
+        {{ end }}
+    {{ else }}
+        <div class="contact-card">
+    {{ end }}
+        <div class="contact-content">
+            
+            {{ if .Params.email }}
+                <p class="contact-info contact-email">
+                    <a href="mailto:{{ .Params.email }}">{{ .Params.email }}</a>
+                </p>
+            {{ end }}
+            
+            {{ if .Params.instagram }}
+                <p class="contact-info contact-instagram">
+                    <a href="https://instagram.com/{{ .Params.instagram }}" target="_blank">@{{ .Params.instagram }}</a>
+                </p>
+            {{ end }}
+            
+            <div class="contact-body">{{ .Content }}</div>
+        </div>
+    </div>
+</div>
+
+{{ end }}
