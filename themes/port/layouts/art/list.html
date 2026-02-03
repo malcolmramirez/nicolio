@@ -7,9 +7,10 @@
     {{ range sort $allPages "Params.weight" }}
     <div class="artwork-card">
       <a href="{{ .Permalink }}" title="{{ .Title }}">
-        {{ $thumb := .Resources.GetMatch .Params.thumb }}
+        {{ $thumb := (.Resources.GetMatch .Params.thumb)  }}
         {{ with $thumb }}
-          <img src="{{ $thumb.RelPermalink }}" alt="{{ .Title }}" class="img-responsive">
+          {{ $resized := .Resize "400x" }} 
+          <img src="{{ $resized.RelPermalink }}" alt="{{ .Title }}" class="img-responsive">
         {{ else }}
           {{ with .Params.image }}
             <img src="{{ . }}" alt="{{ .Title }}" class="img-responsive">

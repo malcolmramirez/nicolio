@@ -4,10 +4,14 @@ convert_thumb () {
     if [ -f "$dir/thumb.png" ]; then
         echo "Skipping conversion for $dir, thumb.png already exists"
     else
-        # Get the width of the image
         width=$(identify -format "%w" "$dir/art.png")
-        # Crop the image to a square based on its width
-        magick "$dir/art.png" -gravity center -crop "${width}x${width}+0+0" "$dir/thumb.png"
+        height=$(identify -format "%h" "$dir/art.png")
+        if [ "$width" -lt "$height" ]; then
+            size=$width
+        else
+            size=$height
+        fi
+        magick "$dir/art.png" -gravity center -crop "${size}x${size}+0+0" +repage "$dir/thumb.png"
         echo "Created thumbnail in $dir"
     fi
 }

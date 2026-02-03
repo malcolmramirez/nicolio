@@ -334,3 +334,14 @@ body {
     left: calc(var(--global-margin) * 12);
 }
 
+.about-container {
+    margin-left: calc(var(--global-margin) * 2);
+}
+
+.about-body {
+    color: var(--font-color);
+    letter-spacing: 0.05em;
+    font-weight: 250;
+    text-decoration: none;
+}
+
