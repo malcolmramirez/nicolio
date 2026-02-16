@@ -7,3 +7,7 @@
     {{- end }}
   {{- end }}
 {{- end }}
+
+{{ with resources.Get "fonts/bitter.ttf" }}
+  <link rel="preload" href="{{ .RelPermalink }}" as="font" type="{{ .MediaType.Type }}" crossorigin>
+{{ end }}

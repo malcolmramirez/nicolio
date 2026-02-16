@@ -2,29 +2,31 @@
 
 {{ partial "taxonomy-menu.html" . }}
 
-<div class="image-grid">
-    {{ $allPages := where .Site.RegularPages "Params.art" "!=" nil }}
-    {{ range sort $allPages "Params.weight" }}
-    <div class="artwork-card">
-      <a href="{{ .Permalink }}" title="{{ .Title }}">
-        {{ $thumb := (.Resources.GetMatch .Params.thumb)  }}
-        {{ with $thumb }}
-          {{ $resized := .Resize "400x" }} 
-          <img src="{{ $resized.RelPermalink }}" alt="{{ .Title }}" class="img-responsive">
-        {{ else }}
-          {{ with .Params.image }}
-            <img src="{{ . }}" alt="{{ .Title }}" class="img-responsive">
-          {{ end }}
-        {{ end }}
-      </a>
-      <div class="artwork-info">
-        <span class="artwork-title">{{ .Title }}</span>
-        {{ with .Params.art }}
-          <span class="artwork-tags">[{{ delimit . ", " }}]</span>
-        {{ end }}
-      </div>
+<div class="page-container">
+    <div class="image-grid">
+        {{ $allPages := where .Site.RegularPages "Params.art" "!=" nil }}
+        {{ range sort $allPages "Params.weight" }}
+        <div class="artwork-card">
+          <a href="{{ .Permalink }}" title="{{ .Title }}">
+            {{ $thumb := (.Resources.GetMatch .Params.thumb)  }}
+            {{ with $thumb }}
+              {{ $resized := .Resize "400x" }} 
+              <img src="{{ $resized.RelPermalink }}" alt="{{ .Title }}" class="img-responsive">
+            {{ else }}
+              {{ with .Params.image }}
+                <img src="{{ . }}" alt="{{ .Title }}" class="img-responsive">
+              {{ end }}
+            {{ end }}
+          </a>
+          <div class="artwork-info">
+            <span class="artwork-title">{{ .Title }}</span>
+            {{ with .Params.art }}
+              <span class="artwork-tags">[{{ delimit . ", " }}]</span>
+            {{ end }}
+          </div>
+        </div>
+      {{ end }}
     </div>
-  {{ end }}
 </div>
 
 {{ end }}

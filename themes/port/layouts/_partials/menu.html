@@ -1,4 +1,4 @@
-<nav class="main-nav">
+<nav class="nav main">
     {{ $currentURL := .RelPermalink }}
     {{ range .Site.Menus.main }}
     <a href="{{ .URL }}" class="{{ if hasPrefix $currentURL .URL }}active{{ end }}">

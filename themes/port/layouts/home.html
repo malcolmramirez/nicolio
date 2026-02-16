@@ -1,5 +1,6 @@
 {{ define "main" }}
 
+<div class="page-container">
     <div class="image-grid">
         {{ with .Site.GetPage "/art" }}
           {{ range (sort .Pages "Date" "desc") }}
@@ -12,6 +13,7 @@
           {{ end }}
         {{ end }}
     </div>
+</div>
 
 
 {{ end }}

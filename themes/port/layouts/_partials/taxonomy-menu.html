@@ -1,25 +1,26 @@
-<nav class="taxonomy-nav">
-  {{ $currentURL := .RelPermalink }}
-  {{ $weights := .Site.Params.taxonomy_weights }}
-  
-  <a href="{{ "/art/" | relLangURL }}" 
-     class="{{ if eq $currentURL "/art/" }}active{{ end }}">
-    all
-  </a>
-  
-  {{ $taxonomyList := slice }}
-  {{ range $taxonomyname, $taxonomy := .Site.Taxonomies.art }}
-    {{ $weight := index $weights $taxonomyname | default 999 }}
-    {{ $taxonomyList = $taxonomyList | append (dict "name" $taxonomyname "taxonomy" $taxonomy "weight" $weight) }}
-  {{ end }}
-  
-  <!-- Sort by weight and display -->
-  {{ range sort $taxonomyList "weight" }}
-    {{ $termURL := printf "/art/%s/" (.name | urlize) }}
-    <a href="{{ $termURL | relLangURL }}" 
-       class="{{ if eq $currentURL $termURL }}active{{ end }}">
-      {{ .name }}
-    </a>
-  {{ end }}
-
-</nav>
+<div class="nav-container">
+    <nav class="nav taxonomy">
+      {{ $currentURL := .RelPermalink }}
+      {{ $weights := .Site.Params.taxonomy_weights }}
+      
+      <a href="{{ "/art/" | relLangURL }}" 
+         class="{{ if eq $currentURL "/art/" }}active{{ end }}">
+        all
+      </a>
+      
+      {{ $taxonomyList := slice }}
+      {{ range $taxonomyname, $taxonomy := .Site.Taxonomies.art }}
+        {{ $weight := index $weights $taxonomyname | default 999 }}
+        {{ $taxonomyList = $taxonomyList | append (dict "name" $taxonomyname "taxonomy" $taxonomy "weight" $weight) }}
+      {{ end }}
+      
+      <!-- Sort by weight and display -->
+      {{ range sort $taxonomyList "weight" }}
+        {{ $termURL := printf "/art/%s/" (.name | urlize) }}
+        <a href="{{ $termURL | relLangURL }}" 
+           class="{{ if eq $currentURL $termURL }}active{{ end }}">
+          {{ .name }}
+        </a>
+      {{ end }}
+    </nav>
+</div>

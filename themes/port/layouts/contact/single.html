@@ -1,6 +1,6 @@
 {{ define "main" }}
 
-<div class="contact-container">
+<div class="page-container">
     {{ if and (isset .Params "card") .Params.card }}
         {{ $card := .Page.Resources.GetMatch .Params.card }}
         {{ with $card }}
@@ -12,13 +12,13 @@
         <div class="contact-content">
             
             {{ if .Params.email }}
-                <p class="contact-info contact-email">
+                <p class="contact-info">
                     <a href="mailto:{{ .Params.email }}">{{ .Params.email }}</a>
                 </p>
             {{ end }}
             
             {{ if .Params.instagram }}
-                <p class="contact-info contact-instagram">
+                <p class="contact-info">
                     <a href="https://instagram.com/{{ .Params.instagram }}" target="_blank">@{{ .Params.instagram }}</a>
                 </p>
             {{ end }}
