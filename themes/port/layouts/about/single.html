@@ -1,7 +1,21 @@
 {{ define "main" }}
 
 <div class="page-container">
-    <div class="body">{{ .Content }}</div>
+    <div class="about-container">
+    {{ if and (isset .Params "image") .Params.image }}
+        {{ $image := .Page.Resources.GetMatch .Params.image }}
+        {{ with $image }}
+            {{ $thumb := .Resize "600x" }}
+            <div class="about-image">
+                {{ printf `<img src="%s" alt="%s" class="img-responsive">` $thumb.RelPermalink .Title | safeHTML }}
+            </div>
+        {{end}}
+    {{ end }}
+
+    <div class="about-details">
+        <div class="artwork-single-info">{{ .Content }}</div>
+    </div>
+    </div>
 </div>
 
 {{ end }}

@@ -271,15 +271,43 @@ body {
     align-items: center;
 }
 
+.about-container {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.about-image {
+  flex-shrink: 0;
+}
+
+.about-image img {
+  display: block;
+  max-width: 100%;
+}
+
+.about-details {
+  flex: 1;
+}
+
+
 @media only screen and (max-width: 729px) {
     .artwork-container {
         flex-direction: column;
     }
     
+    .about-container {
+        flex-direction: column;
+    }
+
     .artwork-image {
         flex: 1 1 auto;
     }
     
+    .about-image {
+        flex: 1 1 auto;
+    }
+
     .taxonomy {
         display: none;
     }
