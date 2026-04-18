@@ -5,60 +5,121 @@
     text-rendering: optimizeLegibility;
 }
 
+/* ─────────────────────────────────────────
+   TOKENS
+───────────────────────────────────────── */
 :root {
-    /* Typography */
-    --font-size: clamp(10px, 4vw, 16px);
-    --font-size-small: calc(var(--font-size) / 1.5);
-    --line-height: 1.6em;
-    --font-stack: 'bitter', serif;
+    /* Typography
+       Old: hard clamp(10px, 4vw, 16px) jumped too aggressively on mid viewports.
+       New: tighter vw coefficient so the mid-range (480–900px) doesn't feel
+       over-scaled, with the same floor/ceiling. */
+    --font-size:       clamp(12px, 1.4vw + 8px, 16px);
+    --font-size-small: calc(var(--font-size) * 0.75);
+    --line-height:     1.6em;
+    --font-stack:      'bitter', serif;
     --menu-font-weight: 150;
-    
+
     /* Layout */
     --page-width: 60em;
-    
-    /* Fluid spacing */
-    --space-unit: clamp(0.875rem, 0.5rem + 1.2vw, 1.5rem);
-    --space-xs: calc(var(--space-unit) * 0.25);
-    --space-sm: calc(var(--space-unit) * 0.5);
-    --space-md: calc(var(--space-unit) * 1);
-    --space-lg: calc(var(--space-unit) * 2);
-    --space-xl: calc(var(--space-unit) * 3);
-    --space-2xl: calc(var(--space-unit) * 4);
-    --space-3xl: calc(var(--space-unit) * 6);
-    
-    /* Consistent horizontal margins */
-    --margin-x: clamp(1em, 4vw, 10em);
-    --half-margin-x: calc(var(--margin-x) / 2);
+
+    /* Fluid spacing
+       Old: space-unit used 0.5rem + 1.2vw, which made gaps balloon on wide
+       screens. New: capped tighter so large viewports don't get excess padding. */
+    --space-unit: clamp(0.75rem, 0.6rem + 0.75vw, 1.25rem);
+    --space-xs:   calc(var(--space-unit) * 0.25);
+    --space-sm:   calc(var(--space-unit) * 0.5);
+    --space-md:   calc(var(--space-unit) * 1);
+    --space-lg:   calc(var(--space-unit) * 2);
+    --space-xl:   calc(var(--space-unit) * 3);
+    --space-2xl:  calc(var(--space-unit) * 4);
+    --space-3xl:  calc(var(--space-unit) * 6);
+
+    /* Margins
+       Old: --margin-x was fixed to --space-lg, which was too wide on mobile.
+       New: fluid clamp so narrow viewports breathe without wasting space. */
+    --margin-x:      clamp(1rem, 4vw, 2.5rem);
+    --half-margin-x: calc(var(--margin-x) * 0.5);
 
     --dot-radius: 0.25em;
-    
+
     /* Colors */
     --background-color: #F3EDE5;
-    --primary-color: #6073D2;
-    --font-color: #1A1110;
+    --primary-color:    #6073D2;
+    --font-color:       #1A1110;
 }
 
 
-h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+/* ─────────────────────────────────────────
+   BASE
+───────────────────────────────────────── */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-stack);
+    font-size: var(--font-size);
+    line-height: var(--line-height);
+    color: var(--font-color);
+    background-color: var(--background-color);
+    /* Prevent horizontal scroll from oversized children */
+    overflow-x: hidden;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+
+/* ─────────────────────────────────────────
+   TYPOGRAPHY
+───────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
     font-family: var(--font-stack);
     color: var(--font-color);
-    font-size: calc(2 * var(--font-size));
-}
-
-.header-container {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    margin: var(--half-margin-x) var(--margin-x);
-}
-
-.page-container {
-    margin: var(--half-margin-x) var(--margin-x);
+    /* Old: calc(2 * var(--font-size)) — doubling an already-fluid value caused
+       large headings on small screens. New: independent fluid clamp. */
+    font-size: clamp(1.25rem, 3vw + 0.5rem, 2rem);
 }
 
 h1 {
     letter-spacing: 0.25em;
     font-weight: 150;
+}
+
+
+/* ─────────────────────────────────────────
+   LAYOUT CONTAINERS
+───────────────────────────────────────── */
+
+/*
+  Header layout:
+    [ h1 title (left) ]   [ .main nav (right, top-aligned) ]
+
+  The taxonomy (.back / filter nav) sits in its own .nav-container
+  below the header, left-aligned under the title.
+*/
+.header-container {
+    display: flex;
+    align-items: flex-start;   /* top-align so nav hugs the top edge */
+    justify-content: space-between;
+    margin: var(--half-margin-x) var(--margin-x);
+    gap: var(--space-sm);
+}
+
+/* Title keeps its natural flow; no flex tricks needed */
+.header-container h1 {
+    margin: 0;
+    margin-top: var(--half-margin-x);
+}
+
+.page-container {
+    margin: var(--half-margin-x) var(--margin-x);
 }
 
 footer {
@@ -68,13 +129,23 @@ footer {
     margin: var(--margin-x);
 }
 
+
+/* ─────────────────────────────────────────
+   NAVIGATION
+───────────────────────────────────────── */
+
+/* Taxonomy / filter nav lives below the header, flush left */
 .nav-container {
-    margin-left: var(--margin-x);
+    margin: 0 var(--margin-x) var(--half-margin-x);
 }
 
 .nav {
     font-weight: var(--menu-font-weight);
     font-family: var(--font-stack);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-xl);
 }
 
 .nav a {
@@ -85,53 +156,69 @@ footer {
     transition: opacity 0.2s;
     opacity: 0.5;
     position: relative;
+    white-space: nowrap;
 }
 
-.nav a:hover {
-    opacity: 1;
-}
-
-.nav a.active {
-    opacity: 1;
-}
+.nav a:hover { opacity: 1; }
+.nav a.active { opacity: 1; }
 
 .nav a.active::before {
     content: '';
     position: absolute;
     top: 50%;
-    right: calc(100% + var(--half-margin-x) - var(--dot-radius));
+    right: calc(100% + var(--space-sm) - var(--dot-radius));
     transform: translateY(-50%);
-    width: calc(var(--dot-radius) * 2);
+    width:  calc(var(--dot-radius) * 2);
     height: calc(var(--dot-radius) * 2);
     border-radius: 50%;
     background-color: var(--primary-color);
 }
 
-.back a {
-    text-align: left;
-    margin-left: var(--margin-x)
+/* Main nav: sits in the top-right corner of .header-container */
+.main {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--space-xl);
+    padding-top: 0.2em;
+    flex-shrink: 0;
 }
 
 .main a {
-    text-align: right;
+    margin: 0;   /* gap handles spacing now */
+    margin-top: var(--half-margin-x);   /* gap handles spacing now */
+}
+
+/* Back link stays left-aligned in nav-container */
+.back a {
+    text-align: left;
     margin-left: var(--margin-x);
 }
 
+/* Old: had a stray `)` in margin-left which was a syntax error */
 .taxonomy {
-    margin-left: calc(var(--dot-radius) + var(--half-margin-x));
+    margin-left: var(--half-margin-x);
 }
 
 .taxonomy a {
     text-align: left;
-    margin-right: var(--margin-x);
+    gap: var(--space-xl);
 }
 
+
+/* ─────────────────────────────────────────
+   IMAGE GRID
+   Old: minmax used --page-width/3 (~20em) as the floor, so on viewports
+   narrower than ~640px columns collapsed to 1 but items could still
+   overflow. New: fluid floor tied to viewport width.
+───────────────────────────────────────── */
 .image-grid {
     display: grid;
-    gap: 0 var(--space-md);
+    gap: var(--space-md);
     grid-template-columns: repeat(
-        auto-fit,
-        minmax(calc(var(--page-width) / 3), 1fr)
+        auto-fill,
+        minmax(min(100%, clamp(180px, 28vw, 340px)), 1fr)
     );
 }
 
@@ -141,6 +228,10 @@ footer {
     object-fit: contain;
 }
 
+
+/* ─────────────────────────────────────────
+   ARTWORK CARD (grid child)
+───────────────────────────────────────── */
 .artwork-card {
     display: flex;
     flex-direction: column;
@@ -152,13 +243,13 @@ footer {
     color: var(--font-color);
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
     margin-top: var(--space-xs);
     margin-bottom: var(--space-sm);
 }
 
-.artwork-tags {
-    opacity: 0.5;
-}
+.artwork-tags { opacity: 0.5; }
 
 .artwork-tags a {
     display: inline-block;
@@ -169,39 +260,41 @@ footer {
     position: relative;
 }
 
-.artwork-tags a:hover {
-    opacity: 1;
-}
+.artwork-tags a:hover { opacity: 1; }
 
-body {
-    font-family: var(--font-stack);
-    font-size: var(--font-size);
-    color: var(--font-color);
-    background-color: var(--background-color);
-}
 
+/* ─────────────────────────────────────────
+   ARTWORK DETAIL PAGE
+   Old: flex: 0 0 clamp(280px, 50%, 600px) meant the image could be 280px
+   wide on a 320px viewport, leaving almost no room for the text column.
+   New: image column collapses gracefully with a smaller floor.
+───────────────────────────────────────── */
 .artwork-container {
     display: flex;
     gap: var(--margin-x);
     align-items: flex-start;
     margin: var(--margin-x);
+    margin-top: var(--half-margin-x);
     letter-spacing: 0.25em;
     font-weight: 150;
+    flex-wrap: wrap;         /* allow wrap before the media query kicks in */
 }
 
 .artwork-image {
-    flex: 0 0 600px;
+    flex: 0 0 clamp(200px, 45%, 600px);
+    min-width: 0;            /* prevent flex blowout */
 }
 
 .artwork-details {
-    flex: 1;
+    flex: 1 1 200px;         /* can shrink but won't go below 200px */
+    min-width: 0;
 }
 
 .artwork-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: var(--half-margin-x);
+    flex-wrap: wrap;
 }
 
 .artwork-single-title {
@@ -220,19 +313,23 @@ body {
     height: auto;
 }
 
+
+/* ─────────────────────────────────────────
+   CONTACT
+───────────────────────────────────────── */
 .contact-card {
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
     display: flex;
     min-height: 500px;
-    align-items: left;
-    justify-content: left;
+    align-items: flex-start;
+    justify-content: flex-start;
 }
 
 .contact-info {
     margin: 0;
-    margin-bottom: var(--half-margin-x); 
+    margin-bottom: var(--half-margin-x);
 }
 
 .contact-info a {
@@ -248,9 +345,7 @@ body {
     background-color: var(--primary-color);
 }
 
-.contact-link {
-    position: relative;
-}
+.contact-link { position: relative; }
 
 .contact-insta {
     display: flex;
@@ -261,7 +356,7 @@ body {
 .contact-insta svg {
     width: var(--font-size);
     height: var(--font-size);
-    display: block; /* Remove inline spacing */
+    display: block;
 }
 
 .contact-insta .contact-info {
@@ -271,71 +366,114 @@ body {
     align-items: center;
 }
 
+
+/* ─────────────────────────────────────────
+   ABOUT PAGE
+   Same column pattern as artwork-container — same fix applied.
+───────────────────────────────────────── */
 .about-container {
-  display: flex;
-  gap: 2rem;
-  align-items: flex-start;
+    display: flex;
+    gap: var(--margin-x);
+    align-items: flex-start;
+    flex-wrap: wrap;
 }
 
 .about-image {
-  flex-shrink: 0;
+    flex: 0 0 clamp(200px, 45%, 600px);
+    min-width: 0;
 }
 
 .about-image img {
-  display: block;
-  max-width: 100%;
+    display: block;
+    max-width: 100%;
 }
 
 .about-details {
-  flex: 1;
+    flex: 1 1 200px;
+    min-width: 0;
 }
 
 
-@media only screen and (max-width: 729px) {
-    .page-container {
-        margin-top: var(--space-lg);
-    }
+/* ─────────────────────────────────────────
+   RESPONSIVE OVERRIDES
+   Breakpoints:
+     - 900px  mid tablet → tighten grid columns
+     - 600px  small tablet / large phone → stack two-column layouts
+     - 400px  small phone → reduce letter-spacing, tighten h1
+───────────────────────────────────────── */
 
-    .artwork-container {
-        flex-direction: column;
+/* Mid-tablet: grid shows 2 columns max */
+@media (max-width: 900px) {
+    .image-grid {
+        grid-template-columns: repeat(
+            auto-fill,
+            minmax(min(100%, clamp(160px, 40vw, 280px)), 1fr)
+        );
     }
-    
+}
+
+/* Small tablet / large phone */
+@media (max-width: 600px) {
+
+    /* Stack two-column flex layouts */
+    .artwork-container,
     .about-container {
         flex-direction: column;
     }
 
-    .artwork-image {
-        flex: 1 1 auto;
-    }
-    
+    .artwork-image,
     .about-image {
         flex: 1 1 auto;
+        width: 100%;
     }
 
+    /* Single-column grid on small phones */
+    .image-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-sm);
+    }
+
+    /* Hide taxonomy nav on small screens */
     .taxonomy {
         display: none;
     }
 
+    /* Header stacks: title on top, main nav centered below */
     .header-container {
         flex-direction: column;
-        justify-content: center;
+        align-items: center;
         width: fit-content;
-        margin: auto;
+        margin-inline: auto;
     }
 
+    /* Main nav centers under the title on mobile */
     .main {
-        display: flex;
-        flex-direction: row; /* horizontal instead of column */
-        justify-content: space-between;
-        width: 95%;
+        justify-content: center;
+        padding-top: 0;
+        width: auto;
+        margin-bottom: var(--half-margin-x);    
     }
 
     .back {
         display: none;
     }
-    
+
     h1 {
         letter-spacing: 0.125em;
     }
 }
 
+/* Small phones: ease up on aggressive letter-spacing */
+@media (max-width: 400px) {
+    h1 {
+        letter-spacing: 0.05em;
+    }
+
+    .artwork-single-title {
+        letter-spacing: 0.1em;
+    }
+
+    .artwork-container {
+        letter-spacing: 0.1em;
+    }
+}

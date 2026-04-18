@@ -1,5 +1,9 @@
 {{ define "main" }}
 
+<div class="nav back">
+    <a href="{{ "/art/" | relLangURL }}">&lt back</a>
+</div>
+
 <div class="page-container">
     <div class="about-container">
     {{ if and (isset .Params "image") .Params.image }}

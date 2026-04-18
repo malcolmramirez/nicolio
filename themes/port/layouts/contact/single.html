@@ -1,5 +1,10 @@
 {{ define "main" }}
 
+<div class="nav back">
+    <a href="{{ "/art/" | relLangURL }}">&lt back</a>
+</div>
+
+
 <div class="page-container">
     {{ if and (isset .Params "card") .Params.card }}
         {{ $card := .Page.Resources.GetMatch .Params.card }}

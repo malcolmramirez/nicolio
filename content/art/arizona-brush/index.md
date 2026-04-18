@@ -1,9 +1,9 @@
 +++
-title = "Desert"
+title = "Arizona Brush"
 image = "art.png"
 thumb = "thumb.png"
 art = ["painting"]
 weight = 1
 +++
 
-Hi there
+Oil on canvas panel, 12 x 12

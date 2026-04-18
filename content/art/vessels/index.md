@@ -6,4 +6,4 @@ art = ["painting"]
 weight = 1
 +++
 
-Oil on canvas, 20 x 20 
+Oil on canvas panel, 12 x 12 

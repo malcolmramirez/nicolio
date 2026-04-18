@@ -6,4 +6,3 @@ thumb = "thumb.png"
 weight = 2
 +++
 
-Hi there

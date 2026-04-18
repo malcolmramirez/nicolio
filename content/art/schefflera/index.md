@@ -6,4 +6,3 @@ art = ["digital"]
 weight = 2
 +++
 
-Hi there
