@@ -53,7 +53,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 }
 
 .page-container {
-    margin: var(--margin-x);
+    margin: var(--half-margin-x) var(--margin-x);
 }
 
 h1 {
@@ -292,6 +292,10 @@ body {
 
 
 @media only screen and (max-width: 729px) {
+    .page-container {
+        margin-top: var(--space-lg);
+    }
+
     .artwork-container {
         flex-direction: column;
     }
