@@ -13,7 +13,7 @@
        Old: hard clamp(10px, 4vw, 16px) jumped too aggressively on mid viewports.
        New: tighter vw coefficient so the mid-range (480–900px) doesn't feel
        over-scaled, with the same floor/ceiling. */
-    --font-size:       clamp(12px, 1.4vw + 8px, 16px);
+    --font-size:       clamp(12px, 1.4vw + 10px, 16px);
     --font-size-small: calc(var(--font-size) * 0.75);
     --line-height:     1.6em;
     --font-stack:      'bitter', serif;
@@ -265,54 +265,65 @@ footer {
 
 /* ─────────────────────────────────────────
    ARTWORK DETAIL PAGE
-   Old: flex: 0 0 clamp(280px, 50%, 600px) meant the image could be 280px
-   wide on a 320px viewport, leaving almost no room for the text column.
-   New: image column collapses gracefully with a smaller floor.
 ───────────────────────────────────────── */
 .artwork-container {
     display: flex;
     gap: var(--margin-x);
     align-items: flex-start;
-    margin: var(--margin-x);
-    margin-top: var(--half-margin-x);
+    margin: var(--half-margin-x) var(--margin-x);
     letter-spacing: 0.25em;
     font-weight: 150;
-    flex-wrap: wrap;         /* allow wrap before the media query kicks in */
+    flex-wrap: wrap;
 }
 
 .artwork-image {
     flex: 0 0 clamp(200px, 45%, 600px);
-    min-width: 0;            /* prevent flex blowout */
-}
-
-.artwork-details {
-    flex: 1 1 200px;         /* can shrink but won't go below 200px */
     min-width: 0;
 }
 
+.artwork-details {
+    flex: 1 1 200px;
+    min-width: 0;
+}
 .artwork-header {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
+    justify-content: flex-start;  /* title anchors left */
+    align-items: baseline;
+    gap: var(--space-md);
+    margin-bottom: var(--space-sm);
+}
+
+.artwork-tags {
+    margin-left: auto;   /* pushes tag to the far right regardless of viewport */
+    white-space: nowrap;
+    flex-shrink: 0;
+    opacity: 0.5;
 }
 
 .artwork-single-title {
     text-transform: uppercase;
     letter-spacing: 0.25em;
     font-weight: 150;
+    margin: 0;              /* kill default h2 margin */
+    margin-top: var(--half-margin-x);
+    font-size: clamp(1.25rem, 3vw + 0.5rem, 2rem);
 }
+
 
 .artwork-single-info {
     letter-spacing: 0.1em;
     font-weight: 175;
 }
 
+/* strip default paragraph margin from .Content output */
+.artwork-single-info p {
+    margin: 0;
+}
+
 .img-responsive {
     max-width: 100%;
     height: auto;
 }
-
 
 /* ─────────────────────────────────────────
    CONTACT
@@ -390,6 +401,7 @@ footer {
 
 .about-details {
     flex: 1 1 200px;
+    margin-top: var(--half-margin-x);
     min-width: 0;
 }
 
@@ -414,7 +426,9 @@ footer {
 
 /* Small tablet / large phone */
 @media (max-width: 600px) {
-
+    .artwork-details {
+        width: 100%;    /* force full width so margin-left: auto on tag has room to work */
+    }
     /* Stack two-column flex layouts */
     .artwork-container,
     .about-container {
@@ -444,6 +458,10 @@ footer {
         align-items: center;
         width: fit-content;
         margin-inline: auto;
+    }
+
+    .artwork-single-title, .about-details {
+        margin-top: 0;
     }
 
     /* Main nav centers under the title on mobile */
